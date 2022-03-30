@@ -53,24 +53,19 @@ Production
 
 ### 2.2. Naming, Terms and Key Concepts
 
-Environments and the configs should be named as
-
-- dev: docker-compose.yml (i.e. use the default names for dev env), but .env.dev
-- (ci): use the dev -env on CI
-- stg: docker-compose.stg.yml, .env.stg
-- prod: docker-compose.prod.yml, .env.prod
+.env should be in the root and have fields named as follows:
+DB_host =
+DB_port =
+DB_user =
+DB_password =
+DB_database =
 
 ### 2.3. Coding Convention
 
 Directory structure
 
-- doc/ for UML documents
-- etc/ for nginx, ssh etc configs. Can be cp -pr etc/ /etc to the virtual machine during provisioning and matches the os directory structure
-- results/ test results
-- reports/ for e.g. code coverage reports
-- src/ for source code
-  \*\* Note! Source code should be placed under a single folder (src) that can be mounted over Docker -volume or Vagrant -shared folder inside the virtual machine so that node_modules or vendor directory are not on the shared folder. See https://wiki.phz.fi/Docker and https://wiki.phz.fi/Vagrant for further details how to circumvent the problems.
 - tests/ for tests
+- dbtools/ creating the database
 
 ### 2.4. Development Guide
 
@@ -84,15 +79,25 @@ Add here examples and hints of good ways how to code the project. Convert the si
 
 ### 3.2. Start the Application
 
+After pulling the newest code from Git.
+
+- npm install
+- make sure you have .env file with correct information in the src folder and **test** folder
+- npm start
+
 ### 3.3. Access the Application
 
 ### 3.4. Run Tests
+
+- npm test
 
 ### 3.5. IDE Setup and Debugging
 
 ### 3.6. Version Control
 
 ### 3.7. Databases and Migrations
+
+The database creation tools are in the dbtools folder.
 
 ### 3.8. Continuous Integration
 
