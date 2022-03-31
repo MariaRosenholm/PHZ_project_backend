@@ -17,6 +17,7 @@ export default class Database {
       try {
         connection = await mariadb.createConnection(this.options);
         let queryResult = await connection.query(sql, parameters);
+        console.log('reached',queryResult);
         if (typeof queryResult === "undefined") {
           reject("Query Error");
         } else if (typeof queryResult.affectedRows === "undefined") {
