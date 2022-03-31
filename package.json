@@ -4,12 +4,11 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "start": "node ./src/index.js"
-    
-    
+    "start": "node ./src/index.js",
+    "prestart": "npm run license",
+    "license": "./node_modules/.bin/license-to-fail ./config/license-checker-config.cjs"
   },
   "keywords": [],
   "author": "",

@@ -65,7 +65,7 @@ DB_database =
 Directory structure
 
 - tests/ for tests
-- dbtools/ creating the database
+- src/storage/ creating the database
 
 ### 2.4. Development Guide
 

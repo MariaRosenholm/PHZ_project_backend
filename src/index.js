@@ -16,14 +16,14 @@ app.use(express.json());
 
 let options = {
   host: process.env.DB_host,
-  //host: "localhost",
-  port: process.env.DB_port,
-  //port: "3010",
+  port: +process.env.DB_port,
   user: process.env.DB_user,
   password: process.env.DB_password,
   database: process.env.DB_database,
   allowPublicKeyRetrieval: true,
 };
+
+console.log(process.env.DB_host);
 
 let db = new Database(options);
 const dataStorage = new Datastorage();
