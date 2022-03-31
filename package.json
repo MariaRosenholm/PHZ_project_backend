@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "start": "node ./src/index.js"
+    
+    
   },
   "keywords": [],
   "author": "",

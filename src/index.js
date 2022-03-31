@@ -16,7 +16,9 @@ app.use(express.json());
 
 let options = {
   host: process.env.DB_host,
+  //host: "localhost",
   port: process.env.DB_port,
+  //port: "3010",
   user: process.env.DB_user,
   password: process.env.DB_password,
   database: process.env.DB_database,
