@@ -3,7 +3,7 @@ import cors from "cors";
 import Database from "./mariadb.js";
 import http from "http";
 import dotenv from "dotenv";
-
+import Datastorage from "./storage/dataStorageLayer.js";
 dotenv.config();
 
 const app = express();
@@ -26,11 +26,16 @@ let options = {
 console.log(process.env.DB_host);
 
 let db = new Database(options);
-
+const dataStorage = new Datastorage();
 app.all("*", (req, res) => {
   res.end("This is database for PHZ Full Stack NPS questionnaire");
 });
-
+app.post('/api/npsdata',(req,res)=>{
+  const npsdata=req.body;
+  dataStorage.insert(npsdata)
+  .then(status=>res.json(status))
+  .catch(err=>res.json(err));
+});
 server.listen(port, host, () =>
   console.log(`Server ${host}:${port} available.`)
 );
