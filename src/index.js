@@ -27,15 +27,19 @@ console.log(process.env.DB_host);
 
 let db = new Database(options);
 const dataStorage = new Datastorage();
+
+app.post("/api/npsdata", (req, res) => {
+  const npsdata = req.body;
+  dataStorage
+    .insert(npsdata)
+    .then((status) => res.json(status))
+    .catch((err) => res.json(err));
+});
+
 app.all("*", (req, res) => {
   res.end("This is database for PHZ Full Stack NPS questionnaire");
 });
-app.post('/api/npsdata',(req,res)=>{
-  const npsdata=req.body;
-  dataStorage.insert(npsdata)
-  .then(status=>res.json(status))
-  .catch(err=>res.json(err));
-});
+
 server.listen(port, host, () =>
   console.log(`Server ${host}:${port} available.`)
 );
