@@ -21,6 +21,7 @@ export default class Datastorage {
   insert(resource) {
     return new Promise(async (resolve, reject) => {
       try {
+          
         await this.db.doQuery(insertSql, toArrayInsert(resource));
         resolve(MESSAGES.INSERT_OK(PRIMARY_KEY, resource[PRIMARY_KEY]));
       } catch (error) {

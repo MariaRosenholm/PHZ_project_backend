@@ -23,9 +23,8 @@ let options = {
   allowPublicKeyRetrieval: true,
 };
 
-console.log(process.env.DB_host);
 
-let db = new Database(options);
+//let db = new Database(options);
 const dataStorage = new Datastorage();
 
 app.post("/api/npsdata", (req, res) => {
@@ -43,3 +42,5 @@ app.all("*", (req, res) => {
 server.listen(port, host, () =>
   console.log(`Server ${host}:${port} available.`)
 );
+export default app;
+
