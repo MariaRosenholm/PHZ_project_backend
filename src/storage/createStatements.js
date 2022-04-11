@@ -12,7 +12,7 @@ export default {
     {
       tableName: "npsdata",
       columns: [
-        "employeeid integer not null primary key",
+        "id integer not null primary key",
         "date Date not null",
         "score integer not null",
         "feedback varchar(150) not null",
