@@ -7,7 +7,8 @@ import sql from "./phz_sqlqueries.js";
 import { toArrayInsert } from "./parameters.js";
 
 const insertSql = sql.insert.join(" ");
-
+const getAllSql=sql.getAll.join(' ');
+const getLabel=sql.getLabel.join(' ');
 const PRIMARY_KEY = sql.primaryKey;
 
 export default class Datastorage {
@@ -17,7 +18,17 @@ export default class Datastorage {
   get CODES() {
     return CODES;
   }
-
+  getAll(){
+    return new Promise(async(resolve,reject)=>{
+        try{
+            const result=await this.db.doQuery(getAllSql);
+            resolve(result.queryResult);
+        }catch(err){
+            console.log(err);
+            reject(MESSAGES.PROGRAM_ERROR());
+        }
+    })
+        } // end of getAll
   insert(resource) {
     return new Promise(async (resolve, reject) => {
       try {

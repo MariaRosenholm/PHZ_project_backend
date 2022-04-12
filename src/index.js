@@ -34,6 +34,10 @@ app.post("/api/npsdata", (req, res) => {
     .then((status) => res.json(status))
     .catch((err) => res.json(err));
 });
+app.get('/api/npsdata',(req,res)=>
+dataStorage.getAll().then(result=>     
+      res.json(result))
+    .catch(err=>res.json(err)));
 
 app.all("*", (req, res) => {
   res.end("This is database for PHZ Full Stack NPS questionnaire");
