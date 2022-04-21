@@ -9,11 +9,10 @@ const printStatements = (statement) => printMessage(`${statement};`);
 
 const printError = (message) =>
   printMessage(`${"#".repeat(20)} Error ${"#".repeat(20)} ${message}`);
-//let createStatements = "./createStatements.json";
+
 if (process.argv.length > 2) {
   createStatements = `./${process.argv[2]}`;
 }
-//console.log(createStatementFile);
 
 try {
   createDb(createStatements);
@@ -22,7 +21,6 @@ try {
 }
 
 async function createDb(createStatements) {
-  //console.log(JSON.stringify(createStatements,null,2));
   const options = {
     host: createStatements.host,
     port: createStatements.port,
@@ -31,7 +29,6 @@ async function createDb(createStatements) {
   };
   const DEBUG = createStatements.debug;
   const db = new Database(options);
-  //'HR'@'localhost'
 
   const user = `'${createStatements.user}'@'${createStatements.host}'`;
   const dropDatabaseSql = `drop database if exists ${createStatements.database}`;
@@ -84,10 +81,4 @@ async function createDb(createStatements) {
   } catch (err) {
     printError(err.message);
   }
-  /* console.log(user);
-printStatements(dropDatabaseSql);
-console.log(createDatabaseSql);
-console.log(dropUserSql);
-console.log(createUserSql);
-console.log(grantPrivilegesSql); */
 }

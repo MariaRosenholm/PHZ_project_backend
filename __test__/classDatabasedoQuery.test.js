@@ -25,7 +25,7 @@ describe("doQuery tests", () => {
       testEmployeeID = Math.floor(Math.random() * 500);
       await db
         .doQuery(
-          "insert into nps_data (employeeid,date,score,feedback) values (?,?,?,?)",
+          "insert into npsdata (id,date,score,feedback) values (?,?,?,?)",
           [testEmployeeID, "2022-03-29", 10, "Testing"]
         )
         .then((result) => result)
@@ -35,7 +35,7 @@ describe("doQuery tests", () => {
     await callback();
 
     await db
-      .doQuery("select * from nps_data where employeeid = ?", [testEmployeeID])
+      .doQuery("select * from npsdata where id = ?", [testEmployeeID])
       .then((result) => (mariadbAnswer = result.queryResult[0]))
       .catch((err) => console.log("Error fetching: " + err));
 

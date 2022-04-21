@@ -2,14 +2,22 @@
 import Database from "../mariadb.js";
 import options from "./databaseOptions.js";
 
-import { CODES, TYPE, MESSAGES } from "./phz_statuscodes.js";
+import { CODES, MESSAGES } from "./phz_statuscodes.js";
 import sql from "./phz_sqlqueries.js";
 import { toArrayInsert } from "./parameters.js";
 
 const insertSql = sql.insert.join(" ");
-const getAllSql=sql.getAll.join(' ');
-const getLabel=sql.getLabel.join(' ');
+const getAllSql = sql.getAll.join(" ");
 const PRIMARY_KEY = sql.primaryKey;
+
+/* let options = {
+  host: process.env.DB_host,
+  port: +process.env.DB_port,
+  user: process.env.DB_user,
+  password: process.env.DB_password,
+  database: process.env.DB_database,
+  allowPublicKeyRetrieval: true,
+}; */
 
 export default class Datastorage {
   constructor() {
@@ -18,21 +26,20 @@ export default class Datastorage {
   get CODES() {
     return CODES;
   }
-  getAll(){
-    return new Promise(async(resolve,reject)=>{
-        try{
-            const result=await this.db.doQuery(getAllSql);
-            resolve(result.queryResult);
-        }catch(err){
-            console.log(err);
-            reject(MESSAGES.PROGRAM_ERROR());
-        }
-    })
-        } // end of getAll
+  getAll() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const result = await this.db.doQuery(getAllSql);
+        resolve(result.queryResult);
+      } catch (err) {
+        console.log(err);
+        reject(MESSAGES.PROGRAM_ERROR());
+      }
+    });
+  } // end of getAll
   insert(resource) {
     return new Promise(async (resolve, reject) => {
       try {
-          
         await this.db.doQuery(insertSql, toArrayInsert(resource));
         resolve(MESSAGES.INSERT_OK(PRIMARY_KEY, resource[PRIMARY_KEY]));
       } catch (error) {
