@@ -9,7 +9,7 @@ import { toArrayInsert } from "./parameters.js";
 const insertSql = sql.insert.join(" ");
 const getAllSql = sql.getAll.join(" ");
 const PRIMARY_KEY = sql.primaryKey;
-
+const getDataBetweenDatesSql=sql.getDataBetweenDates.join(" ");
 /* let options = {
   host: process.env.DB_host,
   port: +process.env.DB_port,
@@ -37,6 +37,18 @@ export default class Datastorage {
       }
     });
   } // end of getAll
+
+  getDataBetweenDates(startDate,endDate) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const result = await this.db.doQuery(getDataBetweenDatesSql,[startDate,endDate]);
+        resolve(result.queryResult);
+      } catch (err) {
+        console.log(err);
+        reject(MESSAGES.PROGRAM_ERROR());
+      }
+    });
+  } // end of getDataBetweenDates
   insert(resource) {
     return new Promise(async (resolve, reject) => {
       try {
