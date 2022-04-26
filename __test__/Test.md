@@ -96,7 +96,7 @@ db.doQuery([
 Return Promise {}
 ```
 
-## Testing endpoint `/api/npsdata``
+## Testing POST endpoint `/api/npsdata`
 
 1. when passed npsData to the endpoint /api/npsdata
    passing request body as
@@ -111,3 +111,11 @@ const bodyData = {
 ```
 
 Returns the response statusCode as 200
+
+## Testing GET endpoint `/api/npsdata`
+
+1. when called the endpoint /api/npsdata all the data in the table npsdata is returned. Returns the response statusCode as 200
+
+## Testing GET endpoint `/api/npsdata/:startDate/:endDate`
+
+1. when called the endpoint /api/npsdata/:startDate/:endDate retrieve list of npsdata in the database with dates in between the startDate and endDate. Returns the response statusCode as 200
