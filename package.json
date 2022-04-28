@@ -5,10 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --forceExit",
-    "start": "node ./src/index.js",
-    "prestart": "npm run license",
-    "license": "./node_modules/.bin/license-to-fail ./config/license-checker-config.cjs"
+    "start": "node ./src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +14,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "mariadb": "^3.0.0"
+    "promise-mysql": "^5.1.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

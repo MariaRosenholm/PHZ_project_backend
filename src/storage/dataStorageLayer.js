@@ -1,7 +1,5 @@
 "use strict";
 import Database from "../mariadb.js";
-import options from "./databaseOptions.js";
-
 import { CODES, MESSAGES } from "./phz_statuscodes.js";
 import sql from "./phz_sqlqueries.js";
 import { toArrayInsert } from "./parameters.js";
@@ -9,40 +7,44 @@ import { toArrayInsert } from "./parameters.js";
 const insertSql = sql.insert.join(" ");
 const getAllSql = sql.getAll.join(" ");
 const PRIMARY_KEY = sql.primaryKey;
-const getDataBetweenDatesSql=sql.getDataBetweenDates.join(" ");
-/* let options = {
-  host: process.env.DB_host,
-  port: +process.env.DB_port,
-  user: process.env.DB_user,
-  password: process.env.DB_password,
-  database: process.env.DB_database,
-  allowPublicKeyRetrieval: true,
-}; */
+const getDataBetweenDatesSql = sql.getDataBetweenDates.join(" ");
 
 export default class Datastorage {
   constructor() {
-    this.db = new Database(options);
+    this.db = new Database();
+    this.pool = "Not set";
   }
   get CODES() {
     return CODES;
   }
+
   getAll() {
     return new Promise(async (resolve, reject) => {
       try {
-        const result = await this.db.doQuery(getAllSql);
-        resolve(result.queryResult);
+        if (this.pool === "Error" || "Not set") {
+          let pool1 = this.db.createPoolAndEnsureSchema();
+          this.pool = await pool1;
+        }
+        const result = this.pool.query(getAllSql);
+        resolve(result);
       } catch (err) {
-        console.log(err);
-        reject(MESSAGES.PROGRAM_ERROR());
+        reject(err.stack);
       }
     });
   } // end of getAll
 
-  getDataBetweenDates(startDate,endDate) {
+  getDataBetweenDates(startDate, endDate) {
     return new Promise(async (resolve, reject) => {
       try {
-        const result = await this.db.doQuery(getDataBetweenDatesSql,[startDate,endDate]);
-        resolve(result.queryResult);
+        if (this.pool === "Error" || "Not set") {
+          let pool1 = this.db.createPoolAndEnsureSchema();
+          this.pool = await pool1;
+        }
+        const result = await this.pool.query(getDataBetweenDatesSql, [
+          startDate,
+          endDate,
+        ]);
+        resolve(result);
       } catch (err) {
         console.log(err);
         reject(MESSAGES.PROGRAM_ERROR());
@@ -52,7 +54,11 @@ export default class Datastorage {
   insert(resource) {
     return new Promise(async (resolve, reject) => {
       try {
-        await this.db.doQuery(insertSql, toArrayInsert(resource));
+        if (this.pool === "Error" || "Not set") {
+          let pool1 = this.db.createPoolAndEnsureSchema();
+          this.pool = await pool1;
+        }
+        await this.pool.query(insertSql, toArrayInsert(resource));
         resolve(MESSAGES.INSERT_OK(PRIMARY_KEY, resource[PRIMARY_KEY]));
       } catch (error) {
         console.log(error);

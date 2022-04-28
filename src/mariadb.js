@@ -1,42 +1,46 @@
-import mariadb from "mariadb";
+import mysql from "promise-mysql";
 
 export default class Database {
-  constructor(options) {
-    if (!options) throw Error("Options missing!");
-    if (!options.port || String(options.port).trim() === "")
-      throw Error("Port missing!");
+  createUnixSocketPool = async (config) => {
+    const dbSocketPath = process.env.DB_SOCKET_PATH || "/cloudsql";
 
-    this.options = options;
-    this.options.port = Number(options.port);
-    this.options.allowPublicKeyRetrieval = true;
-  }
-
-  doQuery(sql, parameters) {
-    return new Promise(async (resolve, reject) => {
-      let connection;
-      try {
-        connection = await mariadb.createConnection(this.options);
-        let queryResult = await connection.query(sql, parameters);
-        if (typeof queryResult === "undefined") {
-          reject("Query Error");
-        } else if (typeof queryResult.affectedRows === "undefined") {
-          delete queryResult.meta;
-          resolve({ queryResult, resultSet: true });
-        } else {
-          resolve({
-            queryResult: {
-              rowsChanged: queryResult.affectedRows,
-              insertId: queryResult.insertId,
-              status: queryResult.warningStatus,
-            },
-            resultSet: false,
-          });
-        }
-      } catch (err) {
-        reject("SQL-error");
-      } finally {
-        if (connection) connection.end();
-      }
+    return mysql.createPool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+      socketPath: `${dbSocketPath}/${process.env.INSTANCE_CONNECTION_NAME}`,
+      ...config,
     });
-  }
+  };
+
+  createPool = async () => {
+    const config = {
+      connectionLimit: 5,
+      connectTimeout: 10000, // 10 seconds
+      acquireTimeout: 10000, // 10 seconds
+      waitForConnections: true, // Default: true
+      queueLimit: 0, // Default: 0
+    };
+
+    return this.createUnixSocketPool(config);
+  };
+
+  ensureSchema = async (pool) => {
+    await pool.query(
+      `CREATE TABLE IF NOT EXISTS npsdata
+        ( id integer not null primary key, date varchar(15) not null,
+        score integer not null, feedback varchar(150) not null );`
+    );
+    console.log("Ensured that table 'npsdata' exists");
+  };
+
+  createPoolAndEnsureSchema = async () =>
+    await this.createPool()
+      .then(async (pool) => {
+        await this.ensureSchema(pool);
+        return pool;
+      })
+      .catch((err) => {
+        return "Error";
+      });
 }
