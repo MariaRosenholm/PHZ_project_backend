@@ -40,13 +40,18 @@ export default class Datastorage {
           let pool1 = this.db.createPoolAndEnsureSchema();
           this.pool = await pool1;
         }
+
+        console.log(getDataBetweenDatesSql);
+        console.log(startDate);
+        console.log(endDate);
         const result = await this.pool.query(getDataBetweenDatesSql, [
           startDate,
           endDate,
         ]);
+        console.log(result);
         resolve(result);
       } catch (err) {
-        console.log(err);
+        console.log(err.stack);
         reject(MESSAGES.PROGRAM_ERROR());
       }
     });
