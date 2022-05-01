@@ -35,14 +35,13 @@ app.get("/api/npsdata", (req, res) =>
     .catch((err) => res.json(err))
 );
 
-app.get("/api/npsdata/:startDate/:endDate", (req, res) => {
-  console.log("start date: ", req.params.startDate);
-  console.log("end date: ", req.params.endDate);
+app.get("/api/npsdata/:startDate/:endDate", (req, res) =>
   dataStorage
     .getDataBetweenDates(req.params.startDate, req.params.endDate)
     .then((result) => res.json(result))
-    .catch((err) => res.json(err));
-});
+    .catch((err) => res.json(err))
+);
+
 app.all("*", (req, res) => {
   res.end("This is database for PHZ Full Stack NPS questionnaire");
 });

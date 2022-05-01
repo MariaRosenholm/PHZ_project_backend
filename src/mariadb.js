@@ -2,7 +2,10 @@ import mysql from "promise-mysql";
 
 export default class Database {
   createUnixSocketPool = async (config) => {
+    console.log(process.env.DB_SOCKET_PATH);
     const dbSocketPath = process.env.DB_SOCKET_PATH || "/cloudsql";
+
+    console.log(dbSocketPath);
 
     return mysql.createPool({
       user: process.env.DB_USER,
@@ -37,6 +40,7 @@ export default class Database {
   createPoolAndEnsureSchema = async () =>
     await this.createPool()
       .then(async (pool) => {
+        console.log(pool);
         await this.ensureSchema(pool);
         return pool;
       })

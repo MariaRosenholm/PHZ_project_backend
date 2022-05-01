@@ -41,9 +41,6 @@ export default class Datastorage {
           this.pool = await pool1;
         }
 
-        console.log(getDataBetweenDatesSql);
-        console.log(startDate);
-        console.log(endDate);
         const result = await this.pool.query(getDataBetweenDatesSql, [
           startDate,
           endDate,
