@@ -26,7 +26,6 @@ export default class Database {
   };
 
   ensureSchema = async (pool) => {
-    console.log("this is pool in the ensureSchema: ", pool);
     await pool.query(
       `CREATE TABLE IF NOT EXISTS npsdata
         ( id integer not null primary key, date varchar(15) not null,
@@ -38,15 +37,10 @@ export default class Database {
   createPoolAndEnsureSchema = async () =>
     await this.createPool()
       .then(async (pool) => {
-        console.log(
-          "this is testing the ensureSchema: ",
-          this.ensureSchema(pool)
-        );
         await this.ensureSchema(pool);
         return pool;
       })
       .catch((err) => {
-        console.log(err.stack);
         return "Error";
       });
 }

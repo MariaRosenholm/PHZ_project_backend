@@ -45,10 +45,8 @@ export default class Datastorage {
           startDate,
           endDate,
         ]);
-        console.log(result);
         resolve(result);
       } catch (err) {
-        console.log(err.stack);
         reject(MESSAGES.PROGRAM_ERROR());
       }
     });
