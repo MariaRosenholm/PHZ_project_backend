@@ -2,10 +2,17 @@ import mysql from "promise-mysql";
 
 export default class Database {
   createUnixSocketPool = async (config) => {
-    console.log(process.env.DB_SOCKET_PATH);
+    console.log(
+      "this is socket path in env file, this should be undefined: ",
+      process.env.DB_SOCKET_PATH
+    );
     const dbSocketPath = process.env.DB_SOCKET_PATH || "/cloudsql";
 
-    console.log(dbSocketPath);
+    console.log("this is given socket path: ", dbSocketPath);
+    console.log(
+      "this is connection nanme in env file: ",
+      process.env.INSTANCE_CONNECTION_NAME
+    );
 
     return mysql.createPool({
       user: process.env.DB_USER,
@@ -40,7 +47,7 @@ export default class Database {
   createPoolAndEnsureSchema = async () =>
     await this.createPool()
       .then(async (pool) => {
-        console.log(pool);
+        console.log("this is the pool in the mariadb.js: ", pool);
         await this.ensureSchema(pool);
         return pool;
       })
