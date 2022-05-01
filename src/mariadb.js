@@ -2,17 +2,7 @@ import mysql from "promise-mysql";
 
 export default class Database {
   createUnixSocketPool = async (config) => {
-    console.log(
-      "this is socket path in env file, this should be undefined: ",
-      process.env.DB_SOCKET_PATH
-    );
     const dbSocketPath = process.env.DB_SOCKET_PATH || "/cloudsql";
-
-    console.log("this is given socket path: ", dbSocketPath);
-    console.log(
-      "this is connection nanme in env file: ",
-      process.env.INSTANCE_CONNECTION_NAME
-    );
 
     return mysql.createPool({
       user: process.env.DB_USER,
@@ -36,6 +26,7 @@ export default class Database {
   };
 
   ensureSchema = async (pool) => {
+    console.log("this is pool in the ensureSchema: ", pool);
     await pool.query(
       `CREATE TABLE IF NOT EXISTS npsdata
         ( id integer not null primary key, date varchar(15) not null,
@@ -47,11 +38,15 @@ export default class Database {
   createPoolAndEnsureSchema = async () =>
     await this.createPool()
       .then(async (pool) => {
-        console.log("this is the pool in the mariadb.js: ", pool);
+        console.log(
+          "this is testing the ensureSchema: ",
+          this.ensureSchema(pool)
+        );
         await this.ensureSchema(pool);
         return pool;
       })
       .catch((err) => {
+        console.log(err.stack);
         return "Error";
       });
 }
