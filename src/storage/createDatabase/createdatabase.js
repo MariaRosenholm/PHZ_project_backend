@@ -1,6 +1,9 @@
 "use strict";
-import Database from "../mariadb.js";
+import Database from "../../mariadb.js";
 import createStatements from "./createStatements.js";
+import dotenv from "dotenv";
+
+dotenv.config({ path: "../../../.env" });
 
 const printMessage = (message) => {
   console.log(message);
@@ -22,22 +25,23 @@ try {
 
 async function createDb(createStatements) {
   const options = {
-    host: createStatements.host,
-    port: createStatements.port,
-    user: createStatements.admin,
-    password: createStatements.adminpassword,
+    host: process.env.DB_host,
+    port: +process.env.DB_port,
+    user: process.env.DB_admin,
+    password: process.env.DB_adminpassword,
   };
+
   const DEBUG = createStatements.debug;
   const db = new Database(options);
 
-  const user = `'${createStatements.user}'@'${createStatements.host}'`;
-  const dropDatabaseSql = `drop database if exists ${createStatements.database}`;
-  const createDatabaseSql = `create database ${createStatements.database}`;
+  const user = `'${process.env.DB_user}'@'${process.env.DB_host}'`;
+  const dropDatabaseSql = `drop database if exists ${process.env.DB_database}`;
+  const createDatabaseSql = `create database ${process.env.DB_database}`;
   const dropUserSql = `drop user if exists ${user}`;
   const createUserSql =
     `create user if not exists ${user} ` +
-    `identified by '${createStatements.userpassword}'`;
-  const grantPrivilegesSql = `grant all privileges on ${createStatements.database}.* to ${user}`;
+    `identified by '${process.env.DB_password}'`;
+  const grantPrivilegesSql = `grant all privileges on ${process.env.DB_database}.* to ${user}`;
 
   try {
     await db.doQuery(dropDatabaseSql);
@@ -56,7 +60,7 @@ async function createDb(createStatements) {
     for (let table of createStatements.tables) {
       if (table.columns && table.columns.length > 0) {
         const createTableSql =
-          `create table ${createStatements.database}.${table.tableName}(` +
+          `create table ${process.env.DB_database}.${table.tableName}(` +
           `\n\t${table.columns.join(",\n\t")}` +
           ")";
         await db.doQuery(createTableSql);
@@ -65,7 +69,7 @@ async function createDb(createStatements) {
           const rows = [];
           for (let data of table.data) {
             const insertSql =
-              `insert into ${createStatements.database}.${table.tableName} ` +
+              `insert into ${process.env.DB_database}.${table.tableName} ` +
               `values(${Array(data.length).fill("?").join(",")})`;
             rows.push(db.doQuery(insertSql, data));
           }

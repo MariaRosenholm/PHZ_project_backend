@@ -33,7 +33,7 @@ export default class Database {
           });
         }
       } catch (err) {
-        reject("SQL-error");
+        reject(err.message);
       } finally {
         if (connection) connection.end();
       }

@@ -1,13 +1,6 @@
 export default {
-  host: "localhost",
-  port: 3306,
-  admin: "root",
-  adminpassword: "",
-  user: "HR",
-  userpassword: "password",
   dropuser: true,
   debug: true,
-  database: "npsdb",
   tables: [
     {
       tableName: "npsdata",

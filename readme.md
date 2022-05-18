@@ -2,11 +2,11 @@
 
 ## 1. Project Description
 
-Business College Helsinki school project with PHZ Full Stack. Embeddable questionnaire's backend with NodeJS, Express and mariadb/mysql.
+Business College Helsinki school project with PHZ Full Stack. Embeddable surveys' backend with NodeJS, Express and mariadb/mysql.
 
 ### 1.1. Business Vision
 
-To make simple backend for storing questionnaire information and login details.
+To make simple backend for storing survey data.
 
 ### 1.2. Task Management
 
@@ -24,9 +24,7 @@ To make simple backend for storing questionnaire information and login details.
 
 ### 1.4. Use Cases
 
-### 1.5. Non-Functional Requirements
-
-https://wiki.phz.fi/NonFunctionalRequirements
+Store data collected from the survey and provide the data for the dashboard where the NPS Score results are shown.
 
 ## 2. Architecture
 
@@ -39,109 +37,66 @@ Coding languages/frameworks/databases/testing
 - mariadb/mysql
 - Jest
 
-Dev
+Production (not in production right now)
 
-- Docker
+- Google Cloud --> use the googleCloudDeployed branch
 
-CI
+- Others ---> You can choose if you wish to use main or googleCloudDeployed for production. In the googleCloudDeployed the connection to mariadb/mysql is made using createPool and socketPath. In main the connection is made using createConnection.
 
-- Jenkins
-
-Production
-
-- GitHub pages
-
-### 2.2. Naming, Terms and Key Concepts
-
-.env should be in the root and have fields named as follows:
-DB_host =
-DB_port =
-DB_user =
-DB_password =
-DB_database =
-
-### 2.3. Coding Convention
-
-Directory structure
+### 2.2. Directory structure
 
 - tests/ for tests
 - src/storage/ creating the database
 
-### 2.4. Development Guide
-
-Add here examples and hints of good ways how to code the project. Convert the silent knowledge as tacit knowledge here.
-
-- See https://en.wikipedia.org/wiki/Knowledge_management
-
 ## 3. Development Environment
 
 ### 3.1. Prerequisites
+
+Environmental variables should have fields named as follows:
+
+- DB_host="your host"
+- DB_port=3306
+- DB_user="user for the mysql/maridb database"
+- DB_password="password for the above user"
+- DB_database="database name"
+- DB_admin="mariadb/mysql root user name"
+- DB_adminpassword="mariadb/mysql root user password
 
 ### 3.2. Start the Application
 
 After pulling the newest code from Git.
 
 - npm install
-- make sure you have .env file with correct information in the src folder and **test** folder
+- make sure you have .env file with correct information in the root
 - npm start
 
-### 3.3. Access the Application
-
-### 3.4. Run Tests
+### 3.3. Run Tests
 
 - npm test
 
-### 3.5. IDE Setup and Debugging
-
-### 3.6. Version Control
-
-### 3.7. Databases and Migrations
+### 3.4. Databases and Migrations
 
 The database creation tools are in the dbtools folder.
 
-### 3.8. Continuous Integration
+## 5. Deployment
 
-## 4. Staging Environment
+### 5.1. Prerequisites
 
-### 4.1. Access
+To deploy you need to have:
 
-### 4.2. Deployment
+- npm
+- node
+- mysql/mariadb
 
-### 4.3. Smoke Tests
+Environmental variables should have fields named as follows:
 
-#### 4.3.1. Automated Test Cases
-
-#### 4.3.2. Manual Test Cases
-
-### 4.4. Rollback
-
-### 4.5. Logs
-
-### 4.6. Monitoring
-
-## 5. Production Environment
-
-### 5.1. Access
-
-### 5.2. Deployment
-
-### 5.3. Smoke Tests
-
-#### 5.3.1. Automated Test Cases
-
-#### 5.3.2. Manual Test Cases
-
-### 5.4. Rollback
-
-### 5.5. Logs
-
-### 5.6. Monitoring
-
-## 6. Operating Manual
-
-### 6.1 Scheduled Jobs
-
-### 6.2 Manual Processes
+- DB_host="your host"
+- DB_port=3306
+- DB_user="user for the mysql/maridb database"
+- DB_password="password for the above user"
+- DB_database="database name"
+- DB_admin="mariadb/mysql root user name"
+- DB_adminpassword="mariadb/mysql root user password
 
 ## 7. Problems
 
