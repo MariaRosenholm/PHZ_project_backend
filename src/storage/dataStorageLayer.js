@@ -1,23 +1,25 @@
 "use strict";
 import Database from "../mariadb.js";
-import options from "./databaseOptions.js";
-
 import { CODES, MESSAGES } from "./phz_statuscodes.js";
 import sql from "./phz_sqlqueries.js";
 import { toArrayInsert } from "./parameters.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const insertSql = sql.insert.join(" ");
 const getAllSql = sql.getAll.join(" ");
 const PRIMARY_KEY = sql.primaryKey;
-const getDataBetweenDatesSql=sql.getDataBetweenDates.join(" ");
-/* let options = {
+const getDataBetweenDatesSql = sql.getDataBetweenDates.join(" ");
+
+const options = {
   host: process.env.DB_host,
   port: +process.env.DB_port,
   user: process.env.DB_user,
   password: process.env.DB_password,
   database: process.env.DB_database,
   allowPublicKeyRetrieval: true,
-}; */
+};
 
 export default class Datastorage {
   constructor() {
@@ -38,10 +40,13 @@ export default class Datastorage {
     });
   } // end of getAll
 
-  getDataBetweenDates(startDate,endDate) {
+  getDataBetweenDates(startDate, endDate) {
     return new Promise(async (resolve, reject) => {
       try {
-        const result = await this.db.doQuery(getDataBetweenDatesSql,[startDate,endDate]);
+        const result = await this.db.doQuery(getDataBetweenDatesSql, [
+          startDate,
+          endDate,
+        ]);
         resolve(result.queryResult);
       } catch (err) {
         console.log(err);

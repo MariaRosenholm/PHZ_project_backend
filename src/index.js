@@ -1,9 +1,7 @@
 import express from "express";
 import cors from "cors";
 import http from "http";
-import dotenv from "dotenv";
 import Datastorage from "./storage/dataStorageLayer.js";
-dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
@@ -29,12 +27,12 @@ app.get("/api/npsdata", (req, res) =>
     .catch((err) => res.json(err))
 );
 
-app.get('/api/npsdata/:startDate/:endDate',(req,res)=>
-dataStorage.getDataBetweenDates(req.params.startDate,req.params.endDate)
-    .then(result=>res.json(result))
-    .catch(err=>
-          res.json(err))
-)
+app.get("/api/npsdata/:startDate/:endDate", (req, res) =>
+  dataStorage
+    .getDataBetweenDates(req.params.startDate, req.params.endDate)
+    .then((result) => res.json(result))
+    .catch((err) => res.json(err))
+);
 app.all("*", (req, res) => {
   res.end("This is database for PHZ Full Stack NPS questionnaire");
 });
