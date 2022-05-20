@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "node ./src/storage/createDatabase/createdatabase.js",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --forceExit",
     "start": "node ./src/index.js",
     "prestart": "npm run license",
