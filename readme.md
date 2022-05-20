@@ -1,4 +1,4 @@
-# PHZ questionnaire project backend
+# PHZ survey project backend
 
 ## 1. Project Description
 
@@ -45,8 +45,8 @@ Production (not in production right now)
 
 ### 2.2. Directory structure
 
-- tests/ for tests
-- src/storage/ creating the database
+- `__test__`/ for tests
+- src/storage/createDatabase for creating the database
 
 ## 3. Development Environment
 
@@ -76,7 +76,9 @@ After pulling the newest code from Git.
 
 ### 3.4. Databases and Migrations
 
-The database creation tools are in the dbtools folder.
+The database creation tools are in the src/storage/createDatabase.
+
+- `node createdatabase.js` to create new database with the information you have given in the enviromental variables
 
 ## 5. Deployment
 
@@ -98,13 +100,29 @@ Environmental variables should have fields named as follows:
 - DB_admin="mariadb/mysql root user name"
 - DB_adminpassword="mariadb/mysql root user password
 
-## 7. Problems
+1. Open mysql/mariadb and
+2. Go to src/storage/createDatabase folder
+3. Run command node createdatabase.js
+4. Run command npm start
 
-### 7.1. Environments
+#### 5.1.1. Google Cloud
 
-### 7.2. Coding
+1. First create SQL database
+2. And create user for the database
+3. Use Cloud Shell to clone the backend repo from github and clone the branch googleCloudDeployed
+4. Instead of .env file you need app.standard.yaml file (standard or some other tier depending on your App Engine tier level)
+5. app.standard.yaml should have:
 
-### 7.3. Dependencies
+   ```yaml
+   runtime: nodejs14
 
-Add here TODO and blockers that you have found related to upgrading to newer versions.
-List the library/framework/service, version, and then the error message.
+   env_variables:
+     DB_USER: user name that you created in SQL just before
+     DB_PASS: password you gave to that user in SQl just before
+     DB_NAME: database name that you just created in SQL before
+     INSTANCE_CONNECTION_NAME: SQL instance connection name
+   ```
+
+   Instance connection name can be found in the SQL dashboard --> Overview --> Connect to this instance --> Connection name
+
+6. Run the backend in the App Engine
